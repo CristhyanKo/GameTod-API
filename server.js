@@ -7,10 +7,14 @@ const version = (process.env.API_VERSION || 'v1')
 mongoose.connect('mongodb://localhost:27017/gametoddb', { useNewUrlParser: true })
 
 const app = express()
-app.use(express.json())
-
 requireDir('./src/models')
+
+app.use(express.json())
 app.use(`/api/${version}`, require('./src/routes/index.route'))
+
+
+
+
 
 app.listen(port, () => {
     console.log(

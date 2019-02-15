@@ -1,21 +1,18 @@
-const express = require('express')
 const mongoose = require('mongoose')
 
-const UserSchema = new mongoose.Schema({
-    nick: {
+const TeamSchema = new mongoose.Schema({
+    name: {
         type: String,
         required: true
     },
-    avatar: String, 
-    password: {
-        type: String,
+    description: String,
+    image: String,
+    owner: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
         required: true
     },
-    email: {
-        type: String,
-        required: true
-    },
-    friends: [{
+    members: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
     }],
@@ -25,4 +22,4 @@ const UserSchema = new mongoose.Schema({
     }
 })
 
-mongoose.model('User', UserSchema)
+mongoose.model('Team', TeamSchema)
