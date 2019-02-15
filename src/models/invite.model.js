@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const mongoosePaginate = require('mongoose-paginate')
 
 const InviteSchema = new mongoose.Schema({
     sender: {
@@ -29,5 +30,7 @@ const InviteSchema = new mongoose.Schema({
         default: Date.now
     }
 })
+
+InviteSchema.plugin(mongoosePaginate)
 
 mongoose.model('Invite', InviteSchema)

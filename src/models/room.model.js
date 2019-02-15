@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const mongoosePaginate = require('mongoose-paginate')
 
 const RoomSchema = new mongoose.Schema({
     game: {
@@ -39,5 +40,7 @@ const RoomSchema = new mongoose.Schema({
         default: Date.now
     }
 })
+
+RoomSchema.plugin(mongoosePaginate)
 
 mongoose.model('Room', RoomSchema)

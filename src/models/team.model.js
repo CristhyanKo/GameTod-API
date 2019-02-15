@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const mongoosePaginate = require('mongoose-paginate')
 
 const TeamSchema = new mongoose.Schema({
     name: {
@@ -21,5 +22,7 @@ const TeamSchema = new mongoose.Schema({
         default: Date.now
     }
 })
+
+TeamSchema.plugin(mongoosePaginate)
 
 mongoose.model('Team', TeamSchema)

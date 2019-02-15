@@ -3,7 +3,8 @@ const Room = mongoose.model('Game')
 
 exports.get = async (req, res, next) => {
     try {
-        const itens = await Room.find()
+        const { page = 1 } = req.query
+        const itens = await Room.paginate({}, {page, limit: 10})
         res.json(itens)
     } catch (err) {
         return next(err)

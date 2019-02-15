@@ -1,5 +1,5 @@
-const express = require('express')
 const mongoose = require('mongoose')
+const mongoosePaginate = require('mongoose-paginate')
 
 const UserSchema = new mongoose.Schema({
     nick: {
@@ -25,5 +25,7 @@ const UserSchema = new mongoose.Schema({
         default: Date.now
     }
 })
+
+UserSchema.plugin(mongoosePaginate)
 
 mongoose.model('User', UserSchema)

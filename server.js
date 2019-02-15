@@ -1,6 +1,8 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const requireDir = require('require-dir')
+const cors = require('cors')
+
 const port = (process.env.PORT || 3001)
 const version = (process.env.API_VERSION || 'v1')
 const prefix = `/api/${version}`
@@ -11,6 +13,7 @@ const app = express()
 requireDir('./src/models')
 
 app.use(express.json())
+app.use(cors())
 
 app.use(prefix, require('./src/routes/index.route'))
 app.use(`${prefix}/game`, require('./src/routes/game.route'))
