@@ -1,5 +1,6 @@
 const express = require('express')
 const mongoose = require('mongoose')
+const requireDir = require('require-dir')
 const port = (process.env.PORT || 3001)
 const version = (process.env.API_VERSION || 'v1')
 
@@ -8,6 +9,7 @@ mongoose.connect('mongodb://localhost:27017/gametoddb', { useNewUrlParser: true 
 const app = express()
 app.use(express.json())
 
+requireDir('./src/models')
 app.use(`/api/${version}`, require('./src/routes/index.route'))
 
 app.listen(port, () => {
