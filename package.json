@@ -1,0 +1,28 @@
+{
+  "name": "GameTod-API",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CristhyanKo/GameTod-API.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CristhyanKo/GameTod-API/issues"
+  },
+  "homepage": "https://github.com/CristhyanKo/GameTod-API#readme",
+  "devDependencies": {
+    "nodemon": "^1.18.10"
+  },
+  "dependencies": {
+    "express": "^4.16.4",
+    "mongoose": "^5.4.12",
+    "require-dir": "^1.2.0"
+  }
+}
