@@ -13,7 +13,8 @@ const UserSchema = new mongoose.Schema({
     },
     email: {
         type: String,
-        required: true
+        required: true,
+        trim: true
     },
     friends: [{
         type: mongoose.Schema.Types.ObjectId,
