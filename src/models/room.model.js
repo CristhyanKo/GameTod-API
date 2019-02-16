@@ -27,7 +27,8 @@ const RoomSchema = new mongoose.Schema({
         ref: 'User'
     }],
     status: {
-        type: ['ABERTO', 'EM_JOGO', 'FECHADO'],
+        type: String,
+        enum: ['ABERTO', 'EM_JOGO', 'FECHADO'],
         default: 'ABERTO'
     },
     open: {

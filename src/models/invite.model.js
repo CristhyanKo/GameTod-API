@@ -17,7 +17,8 @@ const InviteSchema = new mongoose.Schema({
         ref: 'Room'
     },
     type: {
-        type: ['ROOM_INVITE','FRIEND_INVITE'],
+        type: String,
+        enum: ['ROOM_INVITE','FRIEND_INVITE'],
         required: true
     },
     start: {

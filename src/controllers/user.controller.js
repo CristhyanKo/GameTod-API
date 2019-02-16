@@ -4,8 +4,6 @@ const md5 = require('md5')
 const auth = require('../services/auth.service')
 const User = mongoose.model('User')
 
-
-
 exports.get = async (req, res, next) => {
     try {
         const itens = await User.find()
@@ -15,10 +13,42 @@ exports.get = async (req, res, next) => {
     }
 }
 
-exports.getById = async (req, res, next) => {
+const getById = async (req, res, next) => {
     try {
         const item = await User.findById(req.params.id)
         return res.send(item)
+    } catch (err) {
+        return next(err)
+    }
+}
+
+exports.getById = getById
+
+exports.refreshToken = async (req, res, next) => {
+    try {
+        const token = req.body.token || req.query.token || req.headers['x-access-token']
+        const data = await auth.decodeToken(token)
+
+        const user = await getById(data.id)
+
+        if (!user) {
+            res.status(404).send({
+                message: 'User not found'
+            })
+            return
+        }
+
+        const tokenData = await auth.generateToken({ email: user.email, nick: user.nick })
+
+        res.status(201).send({
+            token: token,
+            data: {
+                id: user._id,
+                email: user.email,
+                nick: user.nick,
+                avatar: user.avatar
+            }
+        })
     } catch (err) {
         return next(err)
     }
@@ -36,18 +66,19 @@ exports.authenticate = async (req, res, next) => {
             password: md5(req.body.password + global.SALT_KEY)
         })
 
-        if(!user) {
+        if (!user) {
             res.status(404).send({
                 message: 'User not found'
             })
             return
         }
 
-        const token = await auth.generateToken({email: user.email, nick: user.nick})
+        const token = await auth.generateToken({ email: user.email, nick: user.nick })
 
         res.status(201).send({
             token: token,
             data: {
+                id: user._id,
                 email: user.email,
                 nick: user.nick,
                 avatar: user.avatar
@@ -64,17 +95,18 @@ exports.post = async (req, res, next) => {
         contract.isRequired(req.body.nick, 'O campo de nickname e obrigatorio.')
         contract.isRequired(req.body.password, 'O campo de senha e obrigatorio.')
         contract.isRequired(req.body.email, 'O campo de e-mail e obrigatorio.')
-        
+
         if (!contract.isValid()) {
             res.status(400).send(contract.errors()).end()
             return
         }
-        
+
         const item = await User.create({
             nick: req.body.nick,
             avatar: req.body.avatar,
             password: md5(req.body.password + global.SALT_KEY),
-            email: req.body.email
+            email: req.body.email,
+            roles: ['USER']
         })
         console.log('aqui')
         return res.send(item)

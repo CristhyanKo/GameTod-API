@@ -4,6 +4,7 @@ const controller = require('../controllers/user.controller')
 const auth = require('../services/auth.service')
 
 router.post('/authenticate', controller.authenticate)
+router.post('/refresh-token', controller.refreshToken)
 
 router.get('/', auth.authorize, controller.get)
 router.post('/', controller.post)
