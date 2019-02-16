@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon server.js"
+    "dev": "nodemon src/app.js"
   },
   "repository": {
     "type": "git",
@@ -21,8 +21,11 @@
     "nodemon": "^1.18.10"
   },
   "dependencies": {
+    "body-parser": "^1.18.3",
     "cors": "^2.8.5",
     "express": "^4.16.4",
+    "jsonwebtoken": "^8.4.0",
+    "md5": "^2.2.1",
     "mongoose": "^5.4.12",
     "mongoose-paginate": "^5.0.3",
     "require-dir": "^1.2.0"

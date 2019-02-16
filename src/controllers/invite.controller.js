@@ -1,10 +1,10 @@
 const mongoose = require('mongoose')
-const Invite = mongoose.model('Game')
+const Invite = mongoose.model('Invite')
 
 exports.get = async (req, res, next) => {
     try {
         const itens = await Invite.find()
-        res.json(itens)
+        res.send(itens)
     } catch (err) {
         return next(err)
     }
@@ -13,7 +13,7 @@ exports.get = async (req, res, next) => {
 exports.getById = async (req, res, next) => {
     try {
         const item = await Invite.findById(req.params.id)
-        return res.json(item)
+        return res.send(item)
     } catch (err) {
         return next(err)
     }
@@ -22,7 +22,7 @@ exports.getById = async (req, res, next) => {
 exports.post = async (req, res, next) => {
     try {
         const item = await Invite.create(req.body)
-        return res.json(item)
+        return res.send(item)
     } catch (err) {
         return next(err)
     }
@@ -31,7 +31,7 @@ exports.post = async (req, res, next) => {
 exports.put = async (req, res, next) => {
     try {
         const item = await Invite.findByIdAndUpdate(req.params.id, req.body, { new: true })
-        return res.json(item)
+        return res.send(item)
     } catch (err) {
         return next(err)
     }
