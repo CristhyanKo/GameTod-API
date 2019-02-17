@@ -1,35 +1,31 @@
-const mongoose = require('mongoose')
-const ValidationContract = require('../validators')
 const md5 = require('md5')
 const auth = require('../services/auth.service')
-const User = mongoose.model('User')
+const repository = require('../repositories/user.repository')
 
 exports.get = async (req, res, next) => {
     try {
-        const itens = await User.find()
+        const itens = await repository.get()
         res.send(itens)
     } catch (err) {
         return next(err)
     }
 }
 
-const getById = async (req, res, next) => {
+exports.getById = async (req, res, next) => {
     try {
-        const item = await User.findById(req.params.id)
+        const item = await repository.getById(req.params.id)
         return res.send(item)
     } catch (err) {
         return next(err)
     }
 }
 
-exports.getById = getById
-
 exports.refreshToken = async (req, res, next) => {
     try {
         const token = req.body.token || req.query.token || req.headers['x-access-token']
         const data = await auth.decodeToken(token)
 
-        const user = await getById(data.id)
+        const user = await repository.getById(data.id)
 
         if (!user) {
             res.status(404).send({
@@ -54,14 +50,9 @@ exports.refreshToken = async (req, res, next) => {
     }
 }
 
-const authenticate = async (data) => {
-    const item = await User.findOne({ email: data.email, password: data.password })
-    return item
-}
-
 exports.authenticate = async (req, res, next) => {
     try {
-        const user = await authenticate({
+        const user = await repository.authenticate({
             email: req.body.email,
             password: md5(req.body.password + global.SALT_KEY)
         })
@@ -101,14 +92,7 @@ exports.post = async (req, res, next) => {
             return
         }
 
-        const item = await User.create({
-            nick: req.body.nick,
-            avatar: req.body.avatar,
-            password: md5(req.body.password + global.SALT_KEY),
-            email: req.body.email,
-            roles: ['USER']
-        })
-        console.log('aqui')
+        const item = await repository.post(req.body)
         return res.send(item)
     } catch (err) {
         return next(err)
@@ -117,7 +101,7 @@ exports.post = async (req, res, next) => {
 
 exports.put = async (req, res, next) => {
     try {
-        const item = await User.findByIdAndUpdate(req.params.id, req.body, { new: true })
+        const item = await repository.put(req.params.id, req.body)
         return res.send(item)
     } catch (err) {
         return next(err)
@@ -126,7 +110,7 @@ exports.put = async (req, res, next) => {
 
 exports.delete = async (req, res, next) => {
     try {
-        await User.findByIdAndRemove(req.params.id)
+        await repository.delete(req.params.id)
         return res.send()
     } catch (err) {
         return next(err)

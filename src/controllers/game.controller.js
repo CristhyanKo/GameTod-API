@@ -1,11 +1,9 @@
-const mongoose = require('mongoose')
-const Game = mongoose.model('Game')
-const ValidationContract = require('../validators')
+const repository = require('../repositories/game.repository')
 
 exports.get = async (req, res, next) => {
     try {
         const { page = 1 } = req.query
-        const itens = await Game.paginate({}, {page, limit: 10})
+        const itens = await repository.get(page)
         res.send(itens)
     } catch (err) {
         return next(err)
@@ -14,7 +12,7 @@ exports.get = async (req, res, next) => {
 
 exports.getById = async (req, res, next) => {
     try {
-        const item = await Game.findById(req.params.id)
+        const item = await repository.getById(req.params.id)
         return res.send(item)
     } catch (err) {
         return next(err)
@@ -31,7 +29,7 @@ exports.post = async (req, res, next) => {
             return
         }
 
-        const item = await Game.create(req.body)
+        const item = await repository.post(req.body)
         return res.send(item)
     } catch (err) {
         return next(err)
@@ -40,7 +38,7 @@ exports.post = async (req, res, next) => {
 
 exports.put = async (req, res, next) => {
     try {
-        const item = await Game.findByIdAndUpdate(req.params.id, req.body, { new: true })
+        const item = await repository.put(req.params.id, req.body)
         return res.send(item)
     } catch (err) {
         return next(err)
@@ -49,7 +47,7 @@ exports.put = async (req, res, next) => {
 
 exports.delete = async (req, res, next) => {
     try {
-        await Game.findByIdAndRemove(req.params.id)
+        await repository.delete(req.params.id)
         return res.send()
     } catch (err) {
         return next(err)

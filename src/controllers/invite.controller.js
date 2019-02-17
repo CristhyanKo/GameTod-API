@@ -1,9 +1,8 @@
-const mongoose = require('mongoose')
-const Invite = mongoose.model('Invite')
+const repository = require('../repositories/invite.repository')
 
 exports.get = async (req, res, next) => {
     try {
-        const itens = await Invite.find()
+        const itens = await repository.get()
         res.send(itens)
     } catch (err) {
         return next(err)
@@ -12,7 +11,7 @@ exports.get = async (req, res, next) => {
 
 exports.getById = async (req, res, next) => {
     try {
-        const item = await Invite.findById(req.params.id)
+        const item = await repository.getById(req.params.id)
         return res.send(item)
     } catch (err) {
         return next(err)
@@ -21,7 +20,7 @@ exports.getById = async (req, res, next) => {
 
 exports.post = async (req, res, next) => {
     try {
-        const item = await Invite.create(req.body)
+        const item = await repository.post(req.body)
         return res.send(item)
     } catch (err) {
         return next(err)
@@ -30,7 +29,7 @@ exports.post = async (req, res, next) => {
 
 exports.put = async (req, res, next) => {
     try {
-        const item = await Invite.findByIdAndUpdate(req.params.id, req.body, { new: true })
+        const item = await repository.put(req.params.id, req.body)
         return res.send(item)
     } catch (err) {
         return next(err)
@@ -39,7 +38,7 @@ exports.put = async (req, res, next) => {
 
 exports.delete = async (req, res, next) => {
     try {
-        await Invite.findByIdAndRemove(req.params.id)
+        await repository.delete(req.params.id)
         return res.send()
     } catch (err) {
         return next(err)
