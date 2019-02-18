@@ -21,7 +21,7 @@ contenteditable="false"> <lt-div class="lt-toolbar__wrapper" style="left:822px;p
 `
 
 module.exports = {
-    connectionString: 'mongodb://localhost:27017/gametoddb',
+    connectionString: 'mongodb://dba:gtdba2019@ds139775.mlab.com:39775/gametoddb',
     sendgridkey: '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',
     apiPrefix: `/api/v1`,
     apiPort: (process.env.PORT || 3001),
