@@ -1,4 +1,5 @@
 const repository = require('../repositories/game.repository')
+const ValidationContract = require('../validators')
 
 exports.get = async (req, res, next) => {
     try {
@@ -21,6 +22,8 @@ exports.getById = async (req, res, next) => {
 
 exports.post = async (req, res, next) => {
     try {
+        console.log('aqui')
+
         let contract = new ValidationContract()
         contract.isRequired(req.body.name, 'O campo de nome e obrigatorio.')
 

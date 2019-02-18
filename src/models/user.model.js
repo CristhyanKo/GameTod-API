@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const mongoosePaginate = require('mongoose-paginate')
+const config = require('../config')
 
 const UserSchema = new mongoose.Schema({
     nick: {
@@ -23,8 +24,8 @@ const UserSchema = new mongoose.Schema({
     }],
     roles: {
         type: String,
-        enum: ['USER', 'ADMIN'],
-        default: 'USER',
+        enum: [config.USER, config.ADMIN],
+        default: config.USER,
         required: true
     },
     createdAt: {

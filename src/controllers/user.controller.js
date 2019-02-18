@@ -1,6 +1,8 @@
 const md5 = require('md5')
 const auth = require('../services/auth.service')
 const repository = require('../repositories/user.repository')
+const emailService = require('../services/email.service')
+const ValidationContract = require('../validators')
 
 exports.get = async (req, res, next) => {
     try {
@@ -34,15 +36,16 @@ exports.refreshToken = async (req, res, next) => {
             return
         }
 
-        const tokenData = await auth.generateToken({ email: user.email, nick: user.nick })
+        const tokenData = await auth.generateToken({ id: user._id, email: user.email, nick: user.nick, roles: user.roles })
 
         res.status(201).send({
-            token: token,
+            token: tokenData,
             data: {
                 id: user._id,
                 email: user.email,
                 nick: user.nick,
-                avatar: user.avatar
+                avatar: user.avatar,
+                roles: user.roles
             }
         })
     } catch (err) {
@@ -64,7 +67,7 @@ exports.authenticate = async (req, res, next) => {
             return
         }
 
-        const token = await auth.generateToken({ email: user.email, nick: user.nick })
+        const token = await auth.generateToken({ id: user._id, email: user.email, nick: user.nick, roles: user.roles })
 
         res.status(201).send({
             token: token,
@@ -72,7 +75,8 @@ exports.authenticate = async (req, res, next) => {
                 id: user._id,
                 email: user.email,
                 nick: user.nick,
-                avatar: user.avatar
+                avatar: user.avatar,
+                roles: user.roles
             }
         })
     } catch (err) {
@@ -93,6 +97,8 @@ exports.post = async (req, res, next) => {
         }
 
         const item = await repository.post(req.body)
+        emailService.send(req.body.email, 'Bem vindo(a) ao GameTod', global.EMAIL_TMPL.replace('{0}', req.body.nick))
+
         return res.send(item)
     } catch (err) {
         return next(err)

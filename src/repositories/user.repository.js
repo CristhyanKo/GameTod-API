@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
-const ValidationContract = require('../validators')
 const User = mongoose.model('User')
+const md5 = require('md5')
+const config = require('../config')
 
 exports.authenticate = async (data) => {
     const item = await User.findOne({ email: data.email, password: data.password })
@@ -16,7 +17,7 @@ exports.post = (data) => {
         avatar: data.avatar,
         password: md5(data.password + global.SALT_KEY),
         email: data.email,
-        roles: ['USER']
+        roles: [config.USER]
     })
 }
 
