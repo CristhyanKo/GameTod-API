@@ -10,7 +10,9 @@ mongoose.connect(config.connectionString, { useNewUrlParser: true })
 const app = express()
 requireDir('./models')
 
-app.use(bodyParser.json())
+app.use(bodyParser.json({
+    limit: '5mb'
+}))
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(express.json())
 app.use(cors())

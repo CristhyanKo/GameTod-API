@@ -25,6 +25,8 @@ module.exports = {
     sendgridkey: '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',
     apiPrefix: `/api/v1`,
     apiPort: (process.env.PORT || 3001),
+    
+    //ROLES 
     ADMIN: 'ADMIN',
     USER: 'USER'
 }
