@@ -61,7 +61,7 @@ exports.authenticate = async (req, res, next) => {
         })
 
         if (!user) {
-            res.status(404).send({
+            res.status(401).send({
                 message: 'User not found'
             })
             return
