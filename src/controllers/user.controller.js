@@ -115,7 +115,7 @@ exports.post = async (req, res, next) => {
         }
 
         const existUser = await repository.getByEmail(req.body.email)
-        if (!!existUser) {
+        if (existUser.length > 0) {
             res.status(401).send({
                 error: ErrorValidation.emailExist.message,
                 code: ErrorValidation.emailExist.code
