@@ -53,6 +53,23 @@ exports.refreshToken = async (req, res, next) => {
     }
 }
 
+exports.verifyToken = async (req, res, next) => {
+    try {
+        const token = req.body.token || req.query.token || req.headers['x-access-token']
+        await auth.verifyToken(token)
+        res.send({
+            valid: true,
+            message: 'Token is valid'
+        })
+        return
+    } catch (err) {
+        return res.status(401).send({
+            valid: false,
+            message: 'Token not valid'
+        })
+    }
+}
+
 exports.authenticate = async (req, res, next) => {
     try {
         const user = await repository.authenticate({
