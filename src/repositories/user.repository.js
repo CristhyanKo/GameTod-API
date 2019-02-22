@@ -10,6 +10,7 @@ exports.authenticate = async (data) => {
 
 exports.get = () => { return User.find() }
 exports.getById = (id) => { return User.findById(id) }
+exports.getByEmail = (email) => { return User.find({ email: email }) }
 
 exports.post = (data) => {
     return User.create({

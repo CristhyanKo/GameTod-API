@@ -3,6 +3,7 @@ const auth = require('../services/auth.service')
 const repository = require('../repositories/user.repository')
 const emailService = require('../services/email.service')
 const ValidationContract = require('../validators')
+const ErrorValidation = require('../validators/errors')
 
 exports.get = async (req, res, next) => {
     try {
@@ -110,6 +111,15 @@ exports.post = async (req, res, next) => {
 
         if (!contract.isValid()) {
             res.status(400).send(contract.errors()).end()
+            return
+        }
+
+        const existUser = await repository.getByEmail(req.body.email)
+        if (!!existUser) {
+            res.status(401).send({
+                error: ErrorValidation.emailExist.message,
+                code: ErrorValidation.emailExist.code
+            }).end()
             return
         }
 
