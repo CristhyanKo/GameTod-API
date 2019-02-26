@@ -14,6 +14,8 @@ exports.getByEmail = (email) => { return User.find({ email: email }) }
 
 exports.post = (data) => {
     return User.create({
+        firstName: data.firstName,
+        secondName: data.secondName,
         nick: data.nick,
         avatar: data.avatar,
         password: md5(data.password + global.SALT_KEY),

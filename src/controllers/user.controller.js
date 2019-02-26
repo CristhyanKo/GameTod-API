@@ -37,12 +37,14 @@ exports.refreshToken = async (req, res, next) => {
             return
         }
 
-        const tokenData = await auth.generateToken({ id: user._id, email: user.email, nick: user.nick, roles: user.roles })
+        const tokenData = await auth.generateToken({ id: user._id, firstName: user.firstName, secondName: user.secondName, email: user.email, nick: user.nick, roles: user.roles })
 
         res.status(201).send({
             token: tokenData,
             data: {
                 id: user._id,
+                firstName: user.firstName,
+                secondName: user.secondName,
                 email: user.email,
                 nick: user.nick,
                 avatar: user.avatar,
@@ -85,12 +87,14 @@ exports.authenticate = async (req, res, next) => {
             return
         }
 
-        const token = await auth.generateToken({ id: user._id, email: user.email, nick: user.nick, roles: user.roles })
+        const token = await auth.generateToken({ id: user._id, firstName: user.firstName, secondName: user.secondName, email: user.email, nick: user.nick, roles: user.roles })
 
         res.status(201).send({
             token: token,
             data: {
                 id: user._id,
+                firstName: user.firstName,
+                secondName: user.secondName,
                 email: user.email,
                 nick: user.nick,
                 avatar: user.avatar,
@@ -105,6 +109,8 @@ exports.authenticate = async (req, res, next) => {
 exports.post = async (req, res, next) => {
     try {
         let contract = new ValidationContract()
+        contract.isRequired(req.body.firstName, 'O campo de nome e obrigatorio.')
+        contract.isRequired(req.body.secondName, 'O campo de sobrenome e obrigatorio.')
         contract.isRequired(req.body.nick, 'O campo de nickname e obrigatorio.')
         contract.isRequired(req.body.password, 'O campo de senha e obrigatorio.')
         contract.isRequired(req.body.email, 'O campo de e-mail e obrigatorio.')

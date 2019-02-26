@@ -3,6 +3,14 @@ const mongoosePaginate = require('mongoose-paginate')
 const config = require('../config')
 
 const UserSchema = new mongoose.Schema({
+    firstName: {
+        type: String,
+        required: true
+    },
+    secondName: {
+        type: String,
+        required: true
+    },
     nick: {
         type: String,
         required: true
